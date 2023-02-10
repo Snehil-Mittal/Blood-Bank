@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BloodBankManagementSystem.Models
 {
-    public class UserProfile
+    public class UserAccount
     {
         public int UserId { get; set; }
         public bool Availability { get; set; }
