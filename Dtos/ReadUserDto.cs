@@ -13,6 +13,8 @@ namespace BloodBankManagementSystem.Dtos
     public string Location { get; set; }
     public long MobileNo { get; set; }
     public bool Availability { get; set; }
+    public bool IsApproved { get; set; }
+    public string Badge { get; set; }
 
-}
+    }
 }
