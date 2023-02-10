@@ -72,7 +72,7 @@ namespace BloodBankManagementSystem.Controllers
             {
                 mapper.Map(u, user);
                 var result1 = await repo.UpdateUserDetails(user);
-                var result2 = await repo.UpdateUserRole(user.UserId, u.Role);
+                var result2 = await repo.UpdateUserProfile(user.UserId, u.Role,u.Availability);
                 if (result1 && result2)
                 {
                     return Ok("Update Successful");

@@ -12,7 +12,7 @@ namespace BloodBankManagementSystem.Dtos
     public int Age { get; set; }
     public string Location { get; set; }
     public long MobileNo { get; set; }
-    public UserAccount Profile { get; set; }
+    public bool Availability { get; set; }
 
 }
 }

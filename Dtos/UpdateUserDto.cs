@@ -11,6 +11,7 @@ namespace BloodBankManagementSystem.Dtos
         public string Location { get; set; }
         public int MobileNo { get; set; }
         public string Role { get; set; }
+        public bool Availability { get; set; }
         
     }
 }

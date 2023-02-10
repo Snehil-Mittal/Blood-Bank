@@ -11,7 +11,7 @@ namespace BloodBankManagementSystem.Data
     {
         Task<bool> InsertUser(UserDetails u);
         Task<bool> UpdateUserDetails(UserDetails u);
-        Task<bool> UpdateUserRole(int id, string Role);
+        Task<bool> UpdateUserProfile(int id, string role,bool availability);
         Task<bool> DeleteUser(int userId);
         Task<UserDetails> GetUserById(int id);
         Task<IEnumerable<UserDetails>> GetUsers();

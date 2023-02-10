@@ -227,12 +227,12 @@ namespace BloodBankManagementSystem.Data
             }
         }
 
-        public Task<bool> UpdateUserRole(int id, string Role)
+        public Task<bool> UpdateUserProfile(int id, string role, bool availability)
         {
             try
             {
                 conn = dbHandler.OpenConnection();
-                string query = $"Update UserAccount set role= {Role} where user_id = {id}";
+                string query = $"Update UserAccount set role= {role}, availability={availability} where user_id = {id}";
                 SqlCommand command = new SqlCommand(query, conn);
                 int res = command.ExecuteNonQuery();
                 if (res > 0)
