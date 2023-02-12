@@ -7,6 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserLoginComponent implements OnInit {
 
+  title="Login Form"
+  loginUser(item:any){
+
+    console.warn(item);
+
+  }
+
   constructor() { }
 
   ngOnInit(): void {

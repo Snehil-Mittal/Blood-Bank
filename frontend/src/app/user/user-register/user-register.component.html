@@ -1,1 +1,101 @@
-<p>user-register works!</p>
+<div class="row">
+    <div class="col-6 m-auto">
+        <div class="card m-auto">
+            <div class="card-header text-center">
+                Register
+            </div>
+            <div class="card-body">
+            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text"class="form-control" formControlName="fullName" [ngClass]="{'is-invalid':registerForm.controls.fullName.touched && registerForm.controls.fullName.errors}">
+                    <div *ngIf="registerForm.controls.fullName.touched && registerForm.controls.fullName.errors" class="text-danger">
+                        <div *ngIf="registerForm.controls.fullName.touched && registerForm.controls.fullName.errors.required">This is a required field</div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="bloodgroup">Blood Group:</label>
+                    <select id="bloodgroup"class="form-control" name="bloodgroup" formControlName="bloodGroup" [ngClass]="{'is-invalid':registerForm.controls.bloodGroup.touched && registerForm.controls.bloodGroup.errors}">
+                        <option value="o+">O+</option>
+                        <option value="o-">O-</option>
+                        <option value="a+">A+</option>
+                        <option value="a-">A-</option>
+                        <option value="b+">B+</option>
+                        <option value="b-">B-</option>
+                        <option value="ab+">AB+</option>
+                        <option value="ab-">AB-</option>
+                      </select>
+                      <div *ngIf="registerForm.controls.bloodGroup.touched && registerForm.controls.bloodGroup.errors" class="text-danger">
+                        <div *ngIf="registerForm.controls.bloodGroup.touched && registerForm.controls.bloodGroup.errors.required">Please Select a Blood Group</div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age:</label><br>
+                    <input  type="text"class="form-control"formControlName="age" [ngClass]="{'is-invalid': registerForm.controls.age.touched && registerForm.controls.age.errors}">
+                    <div *ngIf="registerForm.controls.age.touched && registerForm.controls.age.errors" class="text-danger">
+                        <div *ngIf="registerForm.controls.age.touched && registerForm.controls.age.errors.pattern">Please Enter a Valid Number.</div>
+                        <div *ngIf="registerForm.controls.age.touched && registerForm.controls.age.errors.required">This is a required Field</div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender">Gender:</label><br>
+                    <input type="radio" id="male" name="gender" value="male" >
+                    <label for="male">Male</label><br>
+                    <input type="radio" id="female" name="gender" value="female">
+                    <label for="male">Female</label><br>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email"class="form-control" formControlName="email"[ngClass]="{'is-invalid':registerForm.controls.email.touched && registerForm.controls.email.errors}">
+                    <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors" class="text-danger">
+                        <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors.email">Please Enter a Valid Email.</div>
+                        <div *ngIf="registerForm.controls.email.touched && registerForm.controls.email.errors.required">This is a required Field</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Location:</label>
+                    <input type="text"class="form-control" formControlName="location" [ngClass]="{'is-invalid':registerForm.controls.location.touched && registerForm.controls.location.errors}">
+                    <div *ngIf="registerForm.controls.location.touched && registerForm.controls.location.errors" class="text-danger">
+                        <div *ngIf="registerForm.controls.location.touched && registerForm.controls.location.errors.required">This is a required Field</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="mobilenumber">Mobile Number:</label>
+                    <input type="text"class="form-control" formControlName="mobileNumber" [ngClass]="{'is-invalid':(registerForm.controls.mobileNumber.touched) && registerForm.controls.mobileNumber.errors}">
+                    <div *ngIf="registerForm.controls.mobileNumber.touched && registerForm.controls.mobileNumber.errors" class="text-danger">
+                        
+                        <div *ngIf="registerForm.controls.mobileNumber.touched && registerForm.controls.mobileNumber.errors.required">This is a required Field</div>
+                        <div *ngIf="registerForm.controls.mobileNumber.touched && registerForm.controls.mobileNumber.errors.pattern">Please Enter a Valid MobileNumber.</div>
+                        <div *ngIf="registerForm.controls.mobileNumber.touched && registerForm.controls.mobileNumber.errors.minlength">Please Enter 10 digits</div>
+                        <div *ngIf="registerForm.controls.mobileNumber.touched && registerForm.controls.mobileNumber.errors.maxlength">Please Enter 10 digits</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profile">Type:</label><br>
+                    <input type="radio" id="donor" name="profile" value="donor">
+                    <label for="donor">Donor</label><br>
+                    <input type="radio" id="patient" name="profile" value="patient">
+                    <label for="patient">Patient</label><br>
+                   
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary">Register</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</div>

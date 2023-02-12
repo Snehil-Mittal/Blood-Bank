@@ -1,1 +1,28 @@
-<p>user-login works!</p>
+<div class="row">
+    <div class="col-6 m-auto">
+        <div class="card m-auto">
+            <div class="card-header text-center">
+                Login
+            </div>
+            <div class="card-body">
+                <form #loginForm ="ngForm" (ngSubmit)="loginUser(loginForm.value)">
+                <div class="form-group col-12">
+                  <label for="UserName">UserName:</label>
+                  <input type="text" class="form-control" id="UserName" aria-describedby="UserNameHelp" placeholder="Enter your username" name="username"
+                  #name="ngModel" required ngModel>
+                    <span class="text-danger"*ngIf="name.invalid && name.touched">Please enter a valid username</span>
+                </div>
+                <div class="form-group col-12">
+                    <label for="exampleInputPassword1">Password:</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter your password" name="password" #password="ngModel" required ngModel>
+                    <span class="text-danger" *ngIf="password.invalid &&password.touched">This is a required field</span>
+                  </div>
+                  <div class="form-group col-12 ">
+                    <button type="submit" class="btn btn-secondary ml-2" [disabled]="loginForm.invalid" >Login</button>
+                  </div>
+                </form>
+            </div>
+              </div>
+        </div>      
+</div>
+   
