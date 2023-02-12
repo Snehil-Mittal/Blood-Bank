@@ -1,3 +1,4 @@
+using BloodBankManagementSystem.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +29,8 @@ namespace BloodBankManagementSystem
         {
 
             services.AddControllers();
+            services.AddScoped<IUserDetailsRepository, UserDetailsRepositoryImplementation>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BloodBankManagementSystem", Version = "v1" });
@@ -44,7 +47,7 @@ namespace BloodBankManagementSystem
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BloodBankManagementSystem v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

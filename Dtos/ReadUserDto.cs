@@ -10,11 +10,11 @@ namespace BloodBankManagementSystem.Dtos
     public string UserName { get; set; }
     public string BloodGroup { get; set; }
     public int Age { get; set; }
-    public char Gender { get; set; }
-    public string Email { get; set; }
     public string Location { get; set; }
     public long MobileNo { get; set; }
-    public UserProfile Profile { get; set; }
+    public bool Availability { get; set; }
+    public bool IsApproved { get; set; }
+    public string Badge { get; set; }
 
-}
+    }
 }
