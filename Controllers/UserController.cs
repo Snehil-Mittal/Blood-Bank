@@ -2,6 +2,7 @@
 using BloodBankManagementSystem.Data;
 using BloodBankManagementSystem.Dtos;
 using BloodBankManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,8 +23,8 @@ namespace BloodBankManagementSystem.Controllers
             this.mapper = mapper;
         }
 
-
         // GET: api/<UserController>
+        [Authorize(Roles = "Admin, Patient")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ReadUserDto>>> Get()
         {
@@ -36,6 +37,7 @@ namespace BloodBankManagementSystem.Controllers
         }
 
         // GET api/<UserController>/5
+        [Authorize(Roles = "Admin, Patient")]
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<ActionResult<ReadUserDto>> GetUser(int id)
         {
@@ -72,6 +74,7 @@ namespace BloodBankManagementSystem.Controllers
         }
 
         // PUT api/<UserController>/5
+        [Authorize(Roles = "Admin, Patient")]
         [HttpPut("{id}")]
         public async Task<ActionResult<bool>> UpdateUser(int id, [FromBody] UpdateUserDto u)
         {
@@ -98,6 +101,7 @@ namespace BloodBankManagementSystem.Controllers
         }
 
         [HttpPut("Approval/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<bool>> UpdateUser(int id)
         {
             var user = await repo.GetUserById(id);
@@ -121,6 +125,7 @@ namespace BloodBankManagementSystem.Controllers
         }
 
         [HttpPut("donation/{id}")]
+        [Authorize(Roles = "Admin, Donor")]
         public async Task<ActionResult<bool>> UpdateDonation(int id, [FromBody] UpdateUserDto ob)
         {
             var user = await repo.GetUserById(id);

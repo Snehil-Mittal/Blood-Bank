@@ -12,7 +12,7 @@ namespace BloodBankManagementSystem.Data
     public class UserDetailsRepositoryImplementation : IUserDetailsRepository
     {
         SqlConnection conn = null;
-        DbHandler dbHandler = new DbHandler();
+        DbHandler dbHandler;
         public UserDetailsRepositoryImplementation(DbHandler dbHandler)
         {
             this.dbHandler = dbHandler;
@@ -248,7 +248,19 @@ namespace BloodBankManagementSystem.Data
             try
             {
                 conn = dbHandler.OpenConnection();
-                string query = $"Update UserAccount set role= {role}, availability={availability} where user_id = {id}";
+                UserDetails u = GetUserById(id).Result;
+                string query;
+                var prevDate = u.Account.LastDonated;
+                var today = DateTime.Now;
+                var diffOfDates = today - prevDate;
+                if (u.Account.LastDonated != null && diffOfDates.Value.TotalDays >= 56)
+                {
+                    query = $"Update UserAccount set role= {role}, availability={availability} where user_id = {id}";
+                }
+                else
+                {
+                    query = $"Update UserAccount set role= {role} availability = {false} where user_id = {id}";
+                }
                 SqlCommand command = new SqlCommand(query, conn);
                 int res = command.ExecuteNonQuery();
                 if (res > 0)

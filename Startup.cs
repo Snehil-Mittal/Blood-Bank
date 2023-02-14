@@ -27,9 +27,9 @@ namespace BloodBankManagementSystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddScoped<IUserDetailsRepository, UserDetailsRepositoryImplementation>();
+            services.AddSingleton<DbHandler>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen(c =>
             {
