@@ -16,7 +16,7 @@ namespace BloodBankManagementSystem.Data
                 u.Account.LastDonated = lastDonated;
                 if(u.Account.DonationCount > 5)
                 {
-                    u.Account.Badge = "Silver";
+                    u.Account.Badge = "Bronze";
                 }
                 if(u.Account.DonationCount > 10)
                 {

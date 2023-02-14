@@ -78,6 +78,7 @@ namespace BloodBankManagementSystem.Data
                             u.Account.IsApproved = Convert.ToBoolean(reader["isApproved"]);
                             u.Account.LastDonated = Convert.ToDateTime(reader["lastDonated"]);
                             u.Account.Role = (string)(reader["role"]);
+                            if(u.Account.Availability == true)
                             userList.Add(u);
                         }
                     }
@@ -171,7 +172,8 @@ namespace BloodBankManagementSystem.Data
                             u.Account.IsApproved = Convert.ToBoolean(reader["isApproved"]);
                             u.Account.LastDonated = Convert.ToDateTime(reader["lastDonated"]);
                             u.Account.Role = (string)(reader["role"]);
-                            userList.Add(u);
+                            if (u.Account.Availability == true)
+                                userList.Add(u);
                         }
                     }
                     reader.Close();
