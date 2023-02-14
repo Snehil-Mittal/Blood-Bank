@@ -15,6 +15,7 @@ namespace BloodBankManagementSystem.Models
         public string Email { get; set; }
         public string Location { get; set; }
         public long MobileNo { get; set; }
+        public UserAccount Account { get; set; }
 
 
     }

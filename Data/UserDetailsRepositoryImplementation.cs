@@ -1,4 +1,5 @@
-﻿using BloodBankManagementSystem.Models;
+﻿using BloodBankManagementSystem.Dtos;
+using BloodBankManagementSystem.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -51,7 +52,7 @@ namespace BloodBankManagementSystem.Data
             try
             {
                 conn = dbHandler.OpenConnection();
-                string query = $"select * from UserDetails where blood_group = @bloodGroup";
+                string query = $"select * from UserDetails ud join UserProfile up on ud.user_id=up.user_id where blood_group = @bloodGroup";
                 using (conn)
                 {
                     SqlCommand cmd = new SqlCommand(query, conn);
@@ -65,14 +66,18 @@ namespace BloodBankManagementSystem.Data
                         while (reader.Read())
                         {
                             UserDetails u = new UserDetails();
-                            u.UserId = reader.GetInt32(0);
                             u.UserName = (string)reader["user_Name"];
                             u.DateOfBirth = Convert.ToDateTime(reader["dob"]);
                             u.BloodGroup = (string)reader["blood_group"];
-                            u.Email = (string)reader["email"];
                             u.Location = (string)reader["location"];
+                            u.Email = (string)reader["email"];
                             u.Gender = Convert.ToChar(reader["gender"]);
                             u.MobileNo = Convert.ToInt64(reader["mobile_no"]);
+                            u.Account.Availability = Convert.ToBoolean(reader["availability"]);
+                            u.Account.Badge = (string)reader["badge"];
+                            u.Account.IsApproved = Convert.ToBoolean(reader["isApproved"]);
+                            u.Account.LastDonated = Convert.ToDateTime(reader["lastDonated"]);
+                            u.Account.Role = (string)(reader["role"]);
                             userList.Add(u);
                         }
                     }
@@ -96,7 +101,7 @@ namespace BloodBankManagementSystem.Data
             try
             {
                 conn = dbHandler.OpenConnection();
-                string query = $"select * from UserDetails where user_id = @id";
+                string query = $"Select * from UserDetails ud join UserProfile up on ud.user_id = up.user_id where ud.user_id = @id";
                 using (conn)
                 {
                     SqlCommand cmd = new SqlCommand(query, conn);
@@ -109,14 +114,18 @@ namespace BloodBankManagementSystem.Data
                         u = new UserDetails();
                         while (reader.Read())
                         {
-                            u.UserId = reader.GetInt32(0);
                             u.UserName = (string)reader["user_Name"];
                             u.DateOfBirth = Convert.ToDateTime(reader["dob"]);
                             u.BloodGroup = (string)reader["blood_group"];
-                            u.Email = (string)reader["email"];
                             u.Location = (string)reader["location"];
+                            u.Email = (string)reader["email"];
                             u.Gender = Convert.ToChar(reader["gender"]);
                             u.MobileNo = Convert.ToInt64(reader["mobile_no"]);
+                            u.Account.Availability = Convert.ToBoolean(reader["availability"]);
+                            u.Account.Badge = (string)reader["badge"];
+                            u.Account.IsApproved = Convert.ToBoolean(reader["isApproved"]);
+                            u.Account.LastDonated = Convert.ToDateTime(reader["lastDonated"]);
+                            u.Account.Role = (string)(reader["role"]);
                         }
                     }
                     reader.Close();
@@ -139,7 +148,7 @@ namespace BloodBankManagementSystem.Data
             try
             {
                 conn = dbHandler.OpenConnection();
-                string query = $"select * from UserDetails";
+                string query = $"select * from UserDetails ud join UserProfile up on ud.user_id=up.user_id";
                 using (conn)
                 {
                     SqlCommand cmd = new SqlCommand(query, conn);
@@ -150,14 +159,18 @@ namespace BloodBankManagementSystem.Data
                         while (reader.Read())
                         {
                             UserDetails u = new UserDetails();
-                            u.UserId = reader.GetInt32(0);
                             u.UserName = (string)reader["user_Name"];
                             u.DateOfBirth = Convert.ToDateTime(reader["dob"]);
                             u.BloodGroup = (string)reader["blood_group"];
                             u.Email = (string)reader["email"];
-                            u.Location = (string)reader["location"];
                             u.Gender = Convert.ToChar(reader["gender"]);
+                            u.Location = (string)reader["location"];
                             u.MobileNo = Convert.ToInt64(reader["mobile_no"]);
+                            u.Account.Availability = Convert.ToBoolean(reader["availability"]);
+                            u.Account.Badge = (string)reader["badge"];
+                            u.Account.IsApproved = Convert.ToBoolean(reader["isApproved"]);
+                            u.Account.LastDonated = Convert.ToDateTime(reader["lastDonated"]);
+                            u.Account.Role = (string)(reader["role"]);
                             userList.Add(u);
                         }
                     }
@@ -176,8 +189,11 @@ namespace BloodBankManagementSystem.Data
             try
             {
                 conn = dbHandler.OpenConnection();
-                string query = $"Insert into UserDetails values ({u.UserId},'{u.UserName}','{u.BloodGroup}',{u.DateOfBirth},'{u.Gender}','{u.Email}','{u.Location}',{u.MobileNo})";
-                SqlCommand command = new SqlCommand(query, conn);
+                UserHelpUtility ob = new UserHelpUtility();
+                ob.AddAccountDetails(u);
+                string query1 = $"Insert into UserDetails values ({u.UserId},'{u.UserName}','{u.BloodGroup}',{u.DateOfBirth},'{u.Gender}','{u.Email}','{u.Location}',{u.MobileNo})";
+                string query2 = $"Insert into UserAccount values ({u.UserId},{u.Account.Availability},'{u.Account.Badge}','{u.Account.Role}',{u.Account.IsApproved},{u.Account.LastDonated},{u.Account.DonationCount})";
+                SqlCommand command = new SqlCommand(query1, conn);
                 int res = command.ExecuteNonQuery();
                 if (res > 0)
                 {
@@ -248,6 +264,64 @@ namespace BloodBankManagementSystem.Data
             catch (SqlException ex)
             {
                 throw new Exception("Insertion failed" + ex.Message);
+            }
+            finally
+            {
+                dbHandler.CloseConnection();
+            }
+        }
+
+        public Task<bool> UpdateDonation(UserDetails u, DateTime lastDonated)
+        {
+            try
+            {
+                conn = dbHandler.OpenConnection();
+                UserHelpUtility ob = new UserHelpUtility();
+                ob.UpdateDonationDetails(u, lastDonated);
+                string query = $"Update UserAccount set lastDonated = {u.Account.LastDonated}, donationCount = {u.Account.DonationCount}, badge ={u.Account.Badge} where user_id = {u.UserId}";
+                SqlCommand command = new SqlCommand(query, conn);
+                int res = command.ExecuteNonQuery();
+                if (res > 0)
+                {
+                    return Task.Run(() => true);
+                }
+                else
+                {
+                    return Task.Run(() => false);
+                }             
+
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Insertion failed" + ex.Message);
+            }
+            finally
+            {
+                dbHandler.CloseConnection();
+            }
+        }
+
+        public Task<bool> UpdateApproval(UserDetails u)
+        {
+            try
+            {
+                conn = dbHandler.OpenConnection();
+                string query = $"Update UserAccount set isApproved = {true}where user_id = {u.UserId}";
+                SqlCommand command = new SqlCommand(query, conn);
+                int res = command.ExecuteNonQuery();
+                if (res > 0)
+                {
+                    return Task.Run(() => true);
+                }
+                else
+                {
+                    return Task.Run(() => false);
+                }
+
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Approval failed" + ex.Message);
             }
             finally
             {

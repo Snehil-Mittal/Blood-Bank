@@ -12,7 +12,10 @@ namespace BloodBankManagementSystem.Profiles
     {
         public UserProfile()
         {
-            CreateMap<UserDetails, ReadUserDto>();
+            CreateMap<UserDetails, ReadUserDto>()
+                .ForMember(dest => dest.Availability, src => src.MapFrom(s => s.Account.Availability))
+                .ForMember(dest => dest.IsApproved, src => src.MapFrom(s => s.Account.IsApproved))
+                .ForMember(dest => dest.Badge, src => src.MapFrom(s => s.Account.Badge)); 
             CreateMap<CreateUserDto, UserDetails>();
             CreateMap<UpdateUserDto, UserDetails>();
             CreateMap<UserDetails, UpdateUserDto>();

@@ -12,6 +12,7 @@ namespace BloodBankManagementSystem.Dtos
         public int MobileNo { get; set; }
         public string Role { get; set; }
         public bool Availability { get; set; }
+        public DateTime LastDonated { get; set; }
         
     }
 }

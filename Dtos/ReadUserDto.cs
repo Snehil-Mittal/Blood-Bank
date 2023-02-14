@@ -9,7 +9,7 @@ namespace BloodBankManagementSystem.Dtos
     public class ReadUserDto { 
     public string UserName { get; set; }
     public string BloodGroup { get; set; }
-    public int Age { get; set; }
+    public DateTime DateOfBirth { get; set; }
     public string Location { get; set; }
     public long MobileNo { get; set; }
     public bool Availability { get; set; }

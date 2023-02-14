@@ -51,16 +51,24 @@ namespace BloodBankManagementSystem.Controllers
         [HttpPost]
         public async Task<ActionResult<bool>> Post([FromBody] CreateUserDto u)
         {
-            UserDetails user = mapper.Map<UserDetails>(u);
-            bool result = await repo.InsertUser(user);
-
-            if (!result)
+            var result = await GetUser(u.UserId);
+            if(result == null)
             {
-                return BadRequest("The object not created");
-            }
+                UserDetails user = mapper.Map<UserDetails>(u);
+                bool result1 = await repo.InsertUser(user);
 
-            var prod = mapper.Map<ReadUserDto>(user);
-            return CreatedAtRoute(nameof(GetUser), new { id = user.UserId }, prod);
+                if (!result1)
+                {
+                    return BadRequest("The object not created");
+                }
+
+                var prod = mapper.Map<ReadUserDto>(user);
+                return CreatedAtRoute(nameof(GetUser), new { id = user.UserId }, prod);
+            }
+            else
+            {
+                return BadRequest("The object already exists");
+            }
         }
 
         // PUT api/<UserController>/5
@@ -72,8 +80,54 @@ namespace BloodBankManagementSystem.Controllers
             {
                 mapper.Map(u, user);
                 var result1 = await repo.UpdateUserDetails(user);
-                var result2 = await repo.UpdateUserProfile(user.UserId, u.Role,u.Availability);
+                var result2 = await repo.UpdateUserProfile(user.UserId,u.Role,u.Availability);
                 if (result1 && result2)
+                {
+                    return Ok("Update Successful");
+                }
+                else
+                {
+                    return BadRequest("Error in Updation");
+                }
+
+            }
+            else
+            {
+                return NotFound("User not found");
+            }
+        }
+
+        [HttpPut("Approval/{id}")]
+        public async Task<ActionResult<bool>> UpdateUser(int id)
+        {
+            var user = await repo.GetUserById(id);
+            if (user != null)
+            {
+                var result1 = await repo.UpdateApproval(user);
+                if (result1)
+                {
+                    return Ok("Update Successful");
+                }
+                else
+                {
+                    return BadRequest("Error in Updation");
+                }
+
+            }
+            else
+            {
+                return NotFound("User not found");
+            }
+        }
+
+        [HttpPut("donation/{id}")]
+        public async Task<ActionResult<bool>> UpdateDonation(int id, [FromBody] UpdateUserDto ob)
+        {
+            var user = await repo.GetUserById(id);
+            if (user != null)
+            {
+                var result1 = await repo.UpdateDonation(user,ob.LastDonated);
+                if (result1)
                 {
                     return Ok("Update Successful");
                 }

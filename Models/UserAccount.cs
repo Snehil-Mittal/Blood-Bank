@@ -12,7 +12,8 @@ namespace BloodBankManagementSystem.Models
         public string Badge { get; set; }
         public string Role { get; set; }
         public bool IsApproved { get; set; }
-        public DateTime LastDonated { get; set; }
+        public DateTime? LastDonated { get; set; }
+        public int DonationCount { get; set; }
 
     }
 }

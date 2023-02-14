@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace BloodBankManagementSystem.Data
 {
-    interface IUserDetailsRepository
+    public interface IUserDetailsRepository
     {
-        Task<int> InsertUser(UserDetails u);
-        Task<int> UpdateUserContactDetails(int userId, long mobile_no, string email);
-        Task<int> UpdateUserLocation(int userId, string location);
-        Task<int> DeleteUser(int userId);
-        Task<ReadUserDto> GetUserById(int id);
-        Task<IEnumerable<ReadUserDto>> GetUsers();
-        Task<ReadUserDto> GetUserByBloodGroup(string bloodGroup);
+        Task<bool> InsertUser(UserDetails u);
+        Task<bool> UpdateUserDetails(UserDetails u);
+        Task<bool> UpdateUserProfile(int id, string role, bool availability);
+        Task<bool> DeleteUser(int userId);
+        Task<bool> UpdateApproval(UserDetails u);
+        Task<UserDetails> GetUserById(int id);
+        Task<bool> UpdateDonation(UserDetails u, DateTime lastDonated);
+        Task<IEnumerable<UserDetails>> GetUsers();
+        Task<IEnumerable<UserDetails>> GetUsersByBloodGroup(string bloodGroup);
     }
 }
